@@ -5,35 +5,23 @@ const Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies;
 
-
 export function render() {
   const engine = Engine.create();
   const world = engine.world;
   const screenWidth = document.body.clientWidth;
   const screenHeight = document.body.clientHeight;
 
-  const mouse = Matter.Mouse.create(render.canvas),
-    mouseConstraint = Matter.MouseConstraint.create(engine, {
-      mouse: mouse,
-      constraint: {
-        stiffness: 0.2,
-        render: {
-          visible: false
-        }
-      }
-    });
-
-  Matter.World.add(world, mouseConstraint);
-  render.mouse = mouse;
+  addMouse(engine, world);
 
   const circleA = createCircle(400, 200, 80);
   const circleB = createCircle(450, 50, 80);
+  const circleC = createCircle(500, 10, 80);
   const groundWidth = screenWidth;
   const groundHeight = 60;
   const ground = Bodies.rectangle(groundWidth/2, screenHeight - groundHeight/2, screenWidth, 60, {isStatic: true});
+  const barrier = Bodies.rectangle(400, 300, screenWidth, 60, {isStatic: true});
 
-  World.add(engine.world, [circleA, circleB, ground]);
-
+  World.add(world, [circleA, circleB, circleC, ground, barrier]);
   Engine.run(engine);
 
   // RENDERING
@@ -47,24 +35,59 @@ export function render() {
     ctx.canvas.height = document.body.clientHeight;
   };
 
+  ctx.globalCompositeOperation = 'destination-over'
   ctx.lineWidth = 1;
-  ctx.strokeStyle = '#ff0';
-  ctx.fillStyle = '#000';
+  ctx.strokeStyle = 'black';
+  ctx.fillStyle = 'white';
+
+  setTimeout(() => {
+    document.querySelector("video").play()
+  }, 2000)
 
   function canvasRender() {
     Engine.update(engine, 16);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const bodies = Matter.Composite.allBodies(engine.world);
-    ctx.beginPath();
-    for (let i = 0; i < bodies.length; i += 1) {
-      const vertices = bodies[i].vertices;
-      ctx.moveTo(vertices[0].x, vertices[0].y);
-      for (let j = 1; j < vertices.length; j += 1) {
-        ctx.lineTo(vertices[j].x, vertices[j].y);
-      }
-      ctx.lineTo(vertices[0].x, vertices[0].y);
-    }
+
+    bodies
+      .filter(b => b.label === "Circle Body")
+      .forEach(circle => {
+
+        const video = document.querySelector('video');
+        ctx.save();
+        ctx.beginPath()
+        ctx.arc(
+          circle.position.x,
+          circle.position.y,
+          circle.circleRadius,
+          0, Math.PI*2,true
+        )
+        ctx.closePath();
+        ctx.clip();
+
+        ctx.drawImage(
+          video,
+          circle.position.x - circle.circleRadius,
+          circle.position.y - circle.circleRadius,
+          circle.circleRadius*2,
+          circle.circleRadius*2
+        )
+
+        ctx.restore()
+      })
+
+    bodies
+      .filter(b => b.label !== "Circle Body")
+      .forEach(b => {
+        const vertices = b.vertices;
+        ctx.moveTo(vertices[0].x, vertices[0].y);
+        vertices.forEach(v => {
+          ctx.lineTo(v.x, v.y);
+        })
+        ctx.lineTo(vertices[0].x, vertices[0].y);
+      })
+
     ctx.fill();
     ctx.stroke();
 
@@ -76,4 +99,19 @@ export function render() {
 
 function createCircle(x, y, radius) {
   return Bodies.circle(x, y, radius);
+}
+
+function addMouse(engine, world) {
+  const mouse = Matter.Mouse.create(render.canvas),
+    mouseConstraint = Matter.MouseConstraint.create(engine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.2,
+        render: {
+          visible: false
+        }
+      }
+    });
+  Matter.World.add(world, mouseConstraint);
+  render.mouse = mouse;
 }
