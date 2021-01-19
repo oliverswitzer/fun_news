@@ -5,7 +5,9 @@ const Engine = Matter.Engine,
   World = Matter.World,
   Bodies = Matter.Bodies;
 
-export function render() {
+export async function render() {
+  await initStream();
+
   const engine = Engine.create();
   const world = engine.world;
   const screenWidth = document.body.clientWidth;
@@ -40,10 +42,6 @@ export function render() {
   ctx.strokeStyle = 'black';
   ctx.fillStyle = 'white';
 
-  setTimeout(() => {
-    document.querySelector("video").play()
-  }, 2000)
-
   function canvasRender() {
     Engine.update(engine, 16);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -53,8 +51,8 @@ export function render() {
     bodies
       .filter(b => b.label === "Circle Body")
       .forEach(circle => {
+        const video = document.querySelector('#local-video');
 
-        const video = document.querySelector('video');
         ctx.save();
         ctx.beginPath()
         ctx.arc(
@@ -68,10 +66,10 @@ export function render() {
 
         ctx.drawImage(
           video,
-          circle.position.x - circle.circleRadius,
+          circle.position.x - circle.circleRadius - video.videoWidth*0.25/4,
           circle.position.y - circle.circleRadius,
-          circle.circleRadius*2,
-          circle.circleRadius*2
+          video.videoWidth*0.25,
+          video.videoHeight*0.25
         )
 
         ctx.restore()
@@ -114,4 +112,17 @@ function addMouse(engine, world) {
     });
   Matter.World.add(world, mouseConstraint);
   render.mouse = mouse;
+}
+
+async function initStream() {
+  try {
+    // Gets our local media from the browser and stores it as a const, stream.
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true, width: "1280"})
+    // Stores our stream in the global constant, localStream.
+    // localStream = stream
+    // Sets our local video element to stream from the user's webcam (stream).
+    document.getElementById("local-video").srcObject = stream
+  } catch (e) {
+    console.log(e)
+  }
 }
