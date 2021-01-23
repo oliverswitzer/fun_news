@@ -66,7 +66,6 @@ export async function render(container) {
     const article = collision.bodyB;
 
     if(!article.tied) {
-      console.log(lastArticle)
       const constraint = Matter.Constraint.create({
         bodyA: lastArticle ? lastArticle : particle,
         bodyB: article,

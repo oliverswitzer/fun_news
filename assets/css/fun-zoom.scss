@@ -5,3 +5,44 @@ body, html {
   overflow-x: hidden;
   overflow-y: hidden;
 }
+header, footer {
+  @media(max-width: 480px) {
+    h1 { font-size: 1em; }
+    h3 { font-size: 0.75em; }
+  }
+  background: black;
+  padding: 20px;
+  position: absolute;
+  color: white;
+  z-index: 2;
+
+  a { color: lightblue; }
+}
+
+footer {
+  height: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
+
+//footer {
+//  color: white;
+//  background: black;
+//  z-index: 2;
+//
+//  a { color: lightblue; }
+//}
+
+.color-left {
+  color: #7aa0fe;
+}
+
+.color-right {
+  color: #ea1919;
+}
+
+.color-center {
+  color: #ae46f5;
+}
