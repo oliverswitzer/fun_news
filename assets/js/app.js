@@ -21,18 +21,18 @@ import {render} from "./fun-zoom";
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
-const options = {
+let liveSocket = new LiveSocket("/live", Socket, {
   hooks: {
     FunZoom: {
-      mounted() { render() }
+      mounted() {
+        render(this.el)
+      }
     }
   },
   params: {
     _csrf_token: csrfToken
   }
-};
-
-let liveSocket = new LiveSocket("/live", Socket, options)
+})
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())

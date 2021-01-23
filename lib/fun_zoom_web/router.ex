@@ -21,9 +21,11 @@ defmodule FunZoomWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", FunZoomWeb do
-  #   pipe_through :api
-  # end
+   scope "/api", FunZoomWeb do
+     pipe_through :api
+
+     resources "/news.json", NewsController, only: [:index]
+   end
 
   # Enables LiveDashboard only for development
   #
