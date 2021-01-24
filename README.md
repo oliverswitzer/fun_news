@@ -7,3 +7,5 @@ Drag the yellow ball to find some news to read. Collide with different colors to
 [**Demo here**](https://fun-news.gigalixirapp.com/)
 
 ![App Demo](docs/fun-news-demo.gif)
+
+All news data is sourced from https://allsides.com.
