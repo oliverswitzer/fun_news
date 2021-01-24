@@ -19,7 +19,9 @@ export class ShapeFactory {
   }
 
   createWalls(wallThickness) {
-    const ground = this.createRectangle(this.screenWidthFun() / 2, this.screenHeightFun() - wallThickness / 2, this.screenWidthFun(), wallThickness, {isStatic: true});
+    const groundHeight = this.screenWidthFun() < 1200 ?  wallThickness + 100 : wallThickness
+
+    const ground = this.createRectangle(this.screenWidthFun() / 2, this.screenHeightFun() - wallThickness / 2, this.screenWidthFun(), groundHeight, {isStatic: true});
     const ceiling = this.createRectangle(this.screenWidthFun() / 2, 0, this.screenWidthFun(), wallThickness, {isStatic: true});
     const leftWall = this.createRectangle(0, this.screenHeightFun() / 2, wallThickness, this.screenHeightFun(), {isStatic: true});
     const rightWall = this.createRectangle(this.screenWidthFun(), this.screenHeightFun() / 2, wallThickness, this.screenHeightFun(), {isStatic: true});
