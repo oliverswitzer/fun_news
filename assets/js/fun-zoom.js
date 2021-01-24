@@ -116,12 +116,7 @@ function addMouse(engine, world, render) {
 
 async function spawnNewsBlocks(render, world) {
   const newsArticles = await fetch('/api/news.json').then(res => res.json())
-
-  const newsBlocks = _shuffle(newsArticles).splice(0,30).map(article => {
-    if(!BIAS_COLOR_MAP[article.bias]) {
-      console.log(article)
-    }
-
+  const newsBlocks = _shuffle(newsArticles.data).splice(0,30).map(article => {
     const newsRect = Bodies.circle(
       _random(30, render.options.width - 30),
       _random(30, render.options.height - 200),

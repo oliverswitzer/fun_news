@@ -14,7 +14,8 @@ defmodule FunZoom.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: FunZoom.PubSub},
       # Start the Endpoint (http/https)
-      FunZoomWeb.Endpoint
+      FunZoomWeb.Endpoint,
+      FunZoom.NewsGateway
       # Start a worker by calling: FunZoom.Worker.start_link(arg)
       # {FunZoom.Worker, arg}
     ]

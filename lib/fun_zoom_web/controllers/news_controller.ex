@@ -4,11 +4,12 @@ defmodule FunZoomWeb.NewsController do
     |> File.read!
     |> Poison.decode!
   )
+  @news_url "https://www.allsides.com/unbiased-balanced-news"
   use FunZoomWeb, :controller
 
   def index(conn, _params) do
-    conn
-    |> put_status(:ok)
-    |> json(@mock_data)
+    articles = FunZoom.NewsGateway.get_articles()
+
+    render(conn, "index.json", articles: articles)
   end
 end
