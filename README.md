@@ -1,4 +1,4 @@
-# FunZoom
+# FunNews
 
 ### A more playful and interactive way to read the news from both sides of the political aisle. 
 
