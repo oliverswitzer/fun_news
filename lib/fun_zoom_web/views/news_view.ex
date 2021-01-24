@@ -1,7 +1,7 @@
 defmodule FunZoomWeb.NewsView do
   use FunZoomWeb, :view
 
-  def render(anything, %{articles: articles}) do
+  def render("index.json", %{articles: articles}) do
     %{data: articles |> Enum.map(&article_json/1)}
   end
 
