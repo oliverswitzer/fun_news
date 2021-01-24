@@ -7,8 +7,9 @@ body, html {
 }
 header, footer {
   @media(max-width: 480px) {
-    h1 { font-size: 1em; }
-    h3 { font-size: 0.75em; }
+    h1 { font-size: 1.2em; }
+    h3 { font-size: 1em; }
+    p { font-size: 0.7em; }
   }
   background: black;
   padding: 20px;

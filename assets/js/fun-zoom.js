@@ -22,16 +22,12 @@ export async function render(container) {
   const engine = Engine.create();
   const world = engine.world;
 
-  // create renderer
-  const screenWidth = document.body.clientWidth;
-  const screenHeight = document.body.clientHeight;
-
   const render = Render.create({
     element: container,
     engine: engine,
     options: {
-      width: screenWidth,
-      height: screenHeight,
+      width: screenWidth(),
+      height: screenHeight(),
       showAngleIndicator: false,
       wireframes: false
     }
@@ -47,11 +43,11 @@ export async function render(container) {
   Runner.run(runner, engine);
 
   addMouse(engine, world, render);
-  const groundWidth = screenWidth;
+  const groundWidth = screenWidth();
   const groundThickness = 60;
-  const projectile = createCircle(80, screenHeight - groundThickness, groundThickness);
-  const ground = Bodies.rectangle(groundWidth/2, screenHeight - groundThickness/2, screenWidth, 60, {isStatic: true});
-  const leftWall = Bodies.rectangle(-screenWidth/2 + groundThickness, screenHeight/2, groundWidth, screenHeight, {isStatic: true});
+  const projectile = createCircle(80, screenHeight() - groundThickness, groundThickness);
+  const ground = Bodies.rectangle(groundWidth/2, screenHeight() - groundThickness/2, screenWidth(), 60, {isStatic: true});
+  const leftWall = Bodies.rectangle(-screenWidth()/2 + groundThickness, screenHeight()/2, groundWidth, screenHeight(), {isStatic: true});
   World.add(world, [projectile, ground,leftWall]);
 
   spawnNewsBlocks(render, world)
@@ -101,8 +97,8 @@ export async function render(container) {
   Engine.run(engine);
 }
 
-function createCircle(x, y, radius) {
-  return Bodies.circle(x, y, radius);
+function createCircle(x, y, radius, options) {
+  return Bodies.circle(x, y, radius*scaleFactor(), options);
 }
 
 function removeMouse(world) {
@@ -128,7 +124,7 @@ function addMouse(engine, world, render) {
 async function spawnNewsBlocks(render, world) {
   const newsArticles = await fetch('/api/news.json').then(res => res.json())
   const newsBlocks = _shuffle(newsArticles.data).splice(0,30).map(article => {
-    const newsRect = Bodies.circle(
+    const newsRect = createCircle(
       _random(30, render.options.width - 30),
       _random(30, render.options.height - 200),
       30,
@@ -145,4 +141,16 @@ async function spawnNewsBlocks(render, world) {
   })
 
   World.add(world, newsBlocks)
+}
+
+function screenWidth() {
+  return document.body.clientWidth;
+}
+
+function screenHeight() {
+  return document.body.clientHeight;
+}
+
+function scaleFactor() {
+  return (screenWidth() > 1200 ? 1200 : screenWidth()) / 1200
 }
