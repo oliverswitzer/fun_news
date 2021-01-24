@@ -79,17 +79,23 @@ export async function render(container) {
       article.isSensor = true;
 
       lastArticle = article;
-
-      // Render.lookAt(render, [particle, lastArticle], { x: 400, y: 400 })
     }
 
     if (article.href && !article.lookedAt) {
-      // setTimeout(() => {
-        article.lookedAt = true;
-        window.open(article.href, "_blank")
-      // }, 500)
+      article.lookedAt = true;
+      window.open(article.href, "_blank")
     }
   };
+
+  document.addEventListener("visibilitychange", function() {
+    const currentConstraints = world.constraints.map(c => c.label)
+
+    if (document.visibilityState === 'visible' && !currentConstraints.includes("Mouse Constraint")) {
+      addMouse(engine, world, render)
+    } else {
+      removeMouse(world);
+    }
+  });
 
   Events.on(engine, 'collisionStart', collisionStart);
   Engine.run(engine);
@@ -99,6 +105,10 @@ function createCircle(x, y, radius) {
   return Bodies.circle(x, y, radius);
 }
 
+function removeMouse(world) {
+  const mouseConstraint = world.constraints.find(c => c.label === "Mouse Constraint")
+  World.remove(world, mouseConstraint)
+}
 function addMouse(engine, world, render) {
   const mouse = Matter.Mouse.create(render.canvas),
     mouseConstraint = Matter.MouseConstraint.create(engine, {
@@ -112,6 +122,7 @@ function addMouse(engine, world, render) {
     });
   Matter.World.add(world, mouseConstraint);
   render.mouse = mouse;
+
 }
 
 async function spawnNewsBlocks(render, world) {
