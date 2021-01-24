@@ -1,20 +1,9 @@
 # FunZoom
 
-To start your Phoenix server:
+### A more playful and interactive way to read the news from both sides of the political aisle. 
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+Drag the yellow ball to find some news to read. Collide with different colors to be taken to articles with different media biases, varying from left to center to right.
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+[**Demo here**](https://fun-news.gigalixirapp.com/)
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+![App Demo](docs/fun-news-demo.gif)
