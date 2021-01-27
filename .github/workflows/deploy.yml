@@ -16,7 +16,7 @@ jobs:
           git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_SERVE_APP_NAME }}.git
       - name: Deploy news api to Heroku
         run: |
-          git subtree push --prefix news_parser_api heroku main
+          git push heroku `git subtree split --prefix news_parser_api main`:main --force
       - name: Deploy elixir app to Gigalixir
         uses: mhanberg/gigalixir-action@v0.1.0
         with:
