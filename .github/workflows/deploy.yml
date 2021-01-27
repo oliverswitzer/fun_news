@@ -1,0 +1,26 @@
+name: FuSign
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Add api remote origin for news api
+        run: |
+          git remote add heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_SERVE_APP_NAME }}.git
+      - name: Deploy news api to Heroku
+        run: |
+          git subtree push --prefix news_parser_api heroku main
+      - name: Deploy elixir app to Gigalixir
+        uses: mhanberg/gigalixir-action@v0.1.0
+        with:
+          GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
+          GIGALIXIR_PASSWORD: ${{ secrets.GIGALIXIR_PASSWORD }}
+          GIGALIXIR_APP: fun-news
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
