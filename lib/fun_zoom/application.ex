@@ -15,7 +15,8 @@ defmodule FunZoom.Application do
       {Phoenix.PubSub, name: FunZoom.PubSub},
       # Start the Endpoint (http/https)
       FunZoomWeb.Endpoint,
-      FunZoom.NewsGateway
+      FunZoom.NewsGateway,
+      {Oban, oban_config()}
       # Start a worker by calling: FunZoom.Worker.start_link(arg)
       # {FunZoom.Worker, arg}
     ]
@@ -31,5 +32,9 @@ defmodule FunZoom.Application do
   def config_change(changed, _new, removed) do
     FunZoomWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp oban_config do
+    Application.get_env(:fun_zoom, Oban)
   end
 end

@@ -7,6 +7,9 @@ defmodule FunZoom.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
+      dialyzer: [
+        plt_add_deps: :transitive
+      ],
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -33,11 +36,14 @@ defmodule FunZoom.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:dialyxir, "~> 0.5.0", only: [:dev], runtime: false},
       {:ecto_sql, "~> 3.4"},
       {:floki, "~> 0.29.0"},
       {:gettext, "~> 0.11"},
       {:httpoison, "~> 1.8"},
       {:jason, "~> 1.0"},
+      {:hammox, "~> 0.4", only: :test},
+      {:oban, "~> 2.4.1"},
       {:phoenix, "~> 1.5.7"},
       {:phoenix_ecto, "~> 4.1"},
       {:phoenix_html, "~> 2.11"},

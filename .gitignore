@@ -38,3 +38,4 @@ npm-debug.log
 news_parser_api/.env
 news_parser_api/venv
 news_parser_api/app/__pycache__/
+.DS_Store

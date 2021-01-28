@@ -1,5 +1,7 @@
 use Mix.Config
 
+config :fun_zoom, Oban, queues: false, plugins: false
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -20,3 +22,4 @@ config :fun_zoom, FunZoomWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+config :fun_zoom, :all_news_api, FunZoom.NewsScraping.AllNewsApi

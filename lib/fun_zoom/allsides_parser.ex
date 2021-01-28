@@ -1,5 +1,5 @@
 defmodule FunZoom.AllsidesParser do
-  alias FunZoom.Article
+  alias FunZoom.NewsScraping.Article
 
   def get_articles(response_body) do
     news_articles = response_body
@@ -15,6 +15,12 @@ defmodule FunZoom.AllsidesParser do
         bias: parse_bias(article)
       }
     end)
+  end
+
+  def get_top_stories(response_body) do
+    news_articles = response_body
+                    |> Floki.parse_document!()
+                    |> Floki.find(".breaking-news li a")
   end
 
   defp parse_title(article) do

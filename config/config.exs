@@ -10,6 +10,11 @@ use Mix.Config
 config :fun_zoom,
   ecto_repos: [FunZoom.Repo]
 
+config :fun_zoom, Oban,
+  repo: FunZoom.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10]
+
 # Configures the endpoint
 config :fun_zoom, FunZoomWeb.Endpoint,
   url: [host: "localhost"],
@@ -29,3 +34,5 @@ config :phoenix, :json_library, Jason
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
+
+config :fun_zoom, :all_news_api, FunZoom.Test.MockAllNewsApi
