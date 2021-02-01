@@ -1,5 +1,5 @@
 defmodule FunZoom.NewsScraping.AllNewsApiContract do
-  alias FunZoom.NewsScraping.Article
+  alias FunZoom.Article
 
   @callback top_stories() :: list(Article.t())
 end

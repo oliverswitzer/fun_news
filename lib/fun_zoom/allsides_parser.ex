@@ -1,5 +1,5 @@
 defmodule FunZoom.AllsidesParser do
-  alias FunZoom.NewsScraping.Article
+  alias FunZoom.Article
 
   def get_articles(response_body) do
     news_articles = response_body

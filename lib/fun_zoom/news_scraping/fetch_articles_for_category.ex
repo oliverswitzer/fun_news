@@ -1,4 +1,4 @@
-defmodule FunZoom.NewsScraping.FetchArticle do
+defmodule FunZoom.NewsScraping.FetchArticlesForCategory do
   use Oban.Worker, queue: :default
 
   @impl Oban.Worker

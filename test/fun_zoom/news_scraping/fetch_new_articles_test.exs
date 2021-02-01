@@ -4,7 +4,7 @@ defmodule FunZoom.NewsScraping.FetchNewArticlesTest do
   use Oban.Testing, repo: FunZoom.Repo
 
   alias FunZoom.Test.MockAllNewsApi
-  alias FunZoom.NewsScraping.Article
+  alias FunZoom.NewsScraping.NewsCategory
   alias FunZoom.NewsScraping.FetchNewArticles, as: Subject
   alias FunZoom.NewsScraping.FetchArticle
 
@@ -13,27 +13,23 @@ defmodule FunZoom.NewsScraping.FetchNewArticlesTest do
   setup :verify_on_exit!
 
   test "perform" do
-    articles = [
-      %Article{
+    categories = [
+      %NewsCategory{
         title: "Some article",
-        image: "http://placekitten.com/200/200",
-        bias: "Lean Left",
         link: "http://some-news.com"
       },
-      %Article{
-        title: "Some other article",
-        image: "http://placekitten.com/200/200",
-        bias: "Lean Right",
+      %NewsCategory{
+        title: "Some category",
         link: "http://some-other-news.com"
       }
     ]
 
     MockAllNewsApi
-    |> expect(:top_stories, fn  -> articles end)
+    |> expect(:top_categories, fn  -> categories end)
 
     perform_job(Subject, %{})
 
-    assert_enqueued worker: FetchArticle, args: %{url: "http://some-news.com"}
-    assert_enqueued worker: FetchArticle, args: %{url: "http://some-other-news.com"}
+    assert_enqueued worker: FetchArticlesForCategory, args: %{category_url: "http://some-news.com"}
+    assert_enqueued worker: FetchArticlesForCategory, args: %{category_url: "http://some-other-news.com"}
   end
 end

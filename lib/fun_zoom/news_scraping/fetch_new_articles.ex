@@ -11,12 +11,12 @@ defmodule FunZoom.NewsScraping.FetchNewArticles do
     # TODO   Once we have categories, we can fetch and save all the articles on each categories page.
     # TODO   For each of those articles, we can fetch the original source article.
     # has many articles...
-    articles = @all_news_api.top_stories()
+    categories = @all_news_api.top_stories()
 
     articles
-    |> Enum.each(fn article ->
-      %{url: article.link}
-      |> FunZoom.NewsScraping.FetchArticle.new()
+    |> Enum.each(fn category ->
+      %{category_url: category.link}
+      |> FunZoom.NewsScraping.FetchArticlesForCategory.new()
       |> Oban.insert()
     end)
 

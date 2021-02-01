@@ -1,4 +1,4 @@
-defmodule FunZoom.NewsScraping.Article do
+defmodule FunZoom.Article do
   defstruct [:title, :image, :bias, :link]
 
   @type t :: %__MODULE__{
